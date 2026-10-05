@@ -1,13 +1,58 @@
-<!-- PLACEHOLDER, not to ship: borrowed from Notes until a mark is drawn and shown to him. -->
+<!-- 字引: a closed dictionary with thumb-index cuts down its edge: where a word is found. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
     <path
-        android:pathData="M38,30 L70,30 L70,78 L38,78 Z M45,44 L63,44 M45,54 L63,54 M45,64 L57,64"
+        android:pathData="M33.30,23.75 L36.88,23.71 L40.45,23.68 L43.99,23.66 L47.52,23.65 L51.04,23.66 L54.55,23.69 L58.06,23.72 L61.58,23.76 L65.10,23.81 L68.63,23.86 L72.17,23.91 L75.73,23.95 L75.73,24.96 L75.73,25.96 L75.75,26.95 L75.78,27.94 L74.36,28.13 L73.04,28.69 L71.90,29.58 L71.03,30.74 L70.49,32.09 L70.30,33.55 L70.49,35.02 L71.05,36.39 L71.94,37.58 L73.10,38.51 L74.46,39.11 L75.93,39.34 L75.96,40.70 L76.00,42.05 L76.05,43.40 L76.10,44.73 L74.71,44.91 L73.42,45.45 L72.31,46.31 L71.46,47.42 L70.93,48.72 L70.75,50.11 L70.93,51.50 L71.46,52.79 L72.31,53.89 L73.42,54.73 L74.70,55.26 L76.09,55.42 L76.02,56.73 L75.96,58.05 L75.92,59.38 L75.88,60.72 L74.41,60.92 L73.04,61.50 L71.88,62.40 L71.00,63.56 L70.44,64.91 L70.26,66.35 L70.46,67.79 L71.02,69.12 L71.90,70.27 L73.05,71.14 L74.38,71.68 L75.81,71.87 L75.79,73.17 L75.78,74.48 L75.77,75.80 L72.19,75.84 L68.63,75.89 L65.08,75.95 L61.55,76.01 L58.02,76.07 L54.51,76.13 L50.99,76.19 L47.48,76.24 L43.96,76.27 L40.43,76.30 L36.89,76.31 L33.33,76.30 L32.81,75.89 L32.29,74.70 L31.79,72.75 L31.32,70.12 L30.91,66.88 L30.56,63.14 L30.29,59.01 L30.12,54.61 L30.04,50.08 L30.06,45.57 L30.18,41.19 L30.39,37.09 L30.69,33.38 L31.05,30.17 L31.48,27.57 L31.94,25.64 L32.43,24.45 Z"
         android:strokeColor="#000000"
-        android:strokeWidth="2"
+        android:strokeWidth="3.0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M37.02,25.85 L36.85,29.49 L36.90,33.08 L36.87,36.39 L37.04,39.77 L37.25,43.15 L37.08,46.37 L36.94,49.79 L36.92,53.44 L36.80,56.92 L36.97,60.39 L37.21,63.93 L37.11,67.22 L37.05,70.42 L36.96,73.87"
+        android:strokeColor="#000000"
+        android:strokeWidth="3.0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M32.89,84.86 L36.47,85.14 L40.00,85.27 L43.60,85.12 L47.50,85.05 L51.18,85.02 L54.55,84.79 L58.07,84.72 L61.55,84.95 L64.98,85.09 L68.78,85.08 L72.63,85.21 L76.14,85.22 L76.11,81.94 L76.04,78.79 L75.76,75.87"
+        android:strokeColor="#000000"
+        android:strokeWidth="3.0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M31.08,76.15 L31.50,78.83 L32.51,82.08 L32.93,84.84"
+        android:strokeColor="#000000"
+        android:strokeWidth="3.0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M38.77,80.44 L42.26,80.39 L45.63,80.30 L49.13,80.62 L52.12,80.61 L55.37,80.65 L58.70,80.44 L62.25,80.29 L65.54,80.46 L68.62,80.51 L71.86,80.75"
+        android:strokeColor="#000000"
+        android:strokeWidth="3.0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M76.01,27.88 L74.45,28.18 L73.17,28.71 L72.08,29.53 L71.20,30.68 L70.65,31.96 L70.33,33.45 L70.53,35.00 L71.14,36.34 L72.06,37.53 L73.29,38.37 L74.54,38.83 L75.94,39.05 Z"
+        android:fillColor="#000000"
+        android:strokeColor="#000000"
+        android:strokeWidth="3.0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M76.02,44.47 L74.61,44.55 L73.23,45.08 L72.05,46.00 L71.05,47.16 L70.56,48.61 L70.44,50.08 L70.64,51.46 L71.21,52.80 L71.97,53.89 L73.14,54.77 L74.55,55.44 L76.03,55.64 Z"
+        android:fillColor="#000000"
+        android:strokeColor="#000000"
+        android:strokeWidth="3.0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:pathData="M76.06,60.99 L74.60,61.08 L73.23,61.62 L72.02,62.49 L71.05,63.63 L70.60,65.09 L70.44,66.56 L70.65,67.99 L71.18,69.34 L71.95,70.40 L73.17,71.27 L74.56,71.90 L76.05,72.10 Z"
+        android:fillColor="#000000"
+        android:strokeColor="#000000"
+        android:strokeWidth="3.0"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />
 </vector>
