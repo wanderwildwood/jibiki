@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dictionary</string>
+    <!-- In other apps' selected-text menus, beside Copy -->
+    <string name="define_label">Define</string>
+
+    <!-- Read aloud by a screen reader -->
+    <string name="cd_back">Back</string>
+    <string name="cd_about">About</string>
+    <string name="cd_clear">Clear</string>
+
+    <!-- ============================================================ -->
+    <!-- Looking a word up -->
+
+    <string name="search_hint">A word or phrase</string>
+    <string name="search_recent">Looked up lately</string>
+    <string name="unpacking">Unpacking the word list. This happens once.</string>
+    <!-- %1$s is the word that was asked for -->
+    <string name="not_found">“%1$s” is not in this dictionary.</string>
+    <string name="not_found_near">Words that begin the same way:</string>
+    <string name="too_long">That is more than a few words. Select a single word or a short phrase.</string>
+
+    <!-- ============================================================ -->
+    <!-- A word's page -->
+
+    <!-- Before the words a page holds when it holds more than one: "running" and "run" -->
+    <string name="on_this_page">On this page</string>
+    <string name="pos_n">noun</string>
+    <string name="pos_v">verb</string>
+    <string name="pos_a">adjective</string>
+    <string name="pos_r">adverb</string>
+    <!-- Before a list of words that mean the same -->
+    <string name="same">Also</string>
+    <!-- Before a list of words that mean the opposite -->
+    <string name="opposite">Opposite</string>
+    <!-- Before adjectives close in meaning -->
+    <string name="near">Near</string>
+    <!-- Before the broader word a noun or verb is a kind of: "A kind of: tree" -->
+    <string name="kind_of">A kind of</string>
+
+    <!-- When the selection came from a field that can be written in -->
+    <!-- %1$s is the word picked, %2$s the word it would replace -->
+    <string name="replace_use">Put “%1$s” in place of “%2$s”</string>
+    <!-- %1$s is a word -->
+    <string name="replace_look_up">Look up “%1$s”</string>
+
+    <!-- ============================================================ -->
+    <!-- About -->
+
+    <string name="about_title">Dictionary %1$s</string>
+    <string name="about_what">Select a word in another app and choose Define. Nothing leaves the phone: the whole word list is inside the app.</string>
+    <string name="about_licence">GNU General Public License v3</string>
+    <string name="about_wordnet">Words from Open English WordNet 2025, CC BY 4.0, after Princeton WordNet</string>
+    <string name="about_icons">Icons from Material Symbols, Apache 2.0</string>
+    <string name="about_feed_the_llamas">feed the llamas</string>
+    <string name="about_no_browser">There is no browser on this phone to open that with.</string>
+    <string name="about_close">Close</string>
+</resources>
