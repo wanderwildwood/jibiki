@@ -51,8 +51,9 @@ Among the apps made alongside it, Email ([tayori](https://github.com/wanderwildw
 and Clippings ([kirinuki](https://github.com/wanderwildwood/kirinuki)) already offer it, and
 Typewriter ([dajiki](https://github.com/wanderwildwood/dajiki)) and Notes do from their next
 releases. Swapping
-a word in works where the app asks for the result back. Email's compose screen does;
-Typewriter and Notes, being Jetpack Compose, open Define to read only.
+a word in works where the app asks for the answer back: Email's compose screen and Typewriter
+both do. Notes, being Jetpack Compose, opens Define to read only, which is Compose's own
+default.
 
 ## The word list
 
