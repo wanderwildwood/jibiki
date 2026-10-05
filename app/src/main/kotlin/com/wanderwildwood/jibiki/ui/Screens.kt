@@ -105,7 +105,7 @@ fun SearchScreen(
                         imeAction = ImeAction.Search,
                     ),
                     keyboardActions = KeyboardActions(onSearch = { if (query.isNotBlank()) onLookUp(query) }),
-                    modifier = Modifier.weight(1f).focusRequester(focus),
+                    modifier = Modifier.weight(1f).focusRequester(focus).textActions(),
                 )
                 if (query.isNotEmpty()) BarButton(Icons.Close, stringResource(R.string.cd_clear)) { onQuery("") }
             }

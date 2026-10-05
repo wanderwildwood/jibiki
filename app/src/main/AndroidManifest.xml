@@ -3,6 +3,15 @@
 
     <!-- No permissions at all: the whole word list is inside the app. -->
 
+    <!-- The other apps that act on selected text, so the search field's selection menu can
+         list them behind its ⋮ as every other app of this shop does. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT" />
+            <data android:mimeType="text/plain" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
