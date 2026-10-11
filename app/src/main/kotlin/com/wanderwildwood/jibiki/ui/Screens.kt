@@ -110,7 +110,7 @@ fun SearchScreen(
                 if (query.isNotEmpty()) BarButton(Icons.Close, stringResource(R.string.cd_clear)) { onQuery("") }
             }
             val words = if (query.isBlank()) recent else suggestions
-            LazyColumnMMD(modifier = Modifier.fillMaxSize()) {
+            LazyColumnMMD(modifier = Modifier.fillMaxSize(), isScrollbarVisible = false) {
                 if (query.isBlank() && recent.isNotEmpty()) {
                     item(key = "recent") {
                         TextMMD(
@@ -172,7 +172,7 @@ fun WordScreen(
                 at
             }
         }
-        LazyColumnMMD(state = list, modifier = Modifier.padding(padding).fillMaxSize()) {
+        LazyColumnMMD(state = list, modifier = Modifier.padding(padding).fillMaxSize(), isScrollbarVisible = false) {
             if (found.size > 1) {
                 // "running" is also a form of "run", and "run" is usually what was meant; it
                 // should not sit forty meanings down with nothing to say it is there.
