@@ -38,7 +38,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mudita.mmd.components.buttons.OutlinedButtonMMD
 import com.mudita.mmd.components.divider.HorizontalDividerMMD
-import com.mudita.mmd.components.lazy.LazyColumnMMD
 import com.mudita.mmd.components.text.TextMMD
 import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.mudita.mmd.components.top_app_bar.TopAppBarMMD
@@ -110,7 +109,7 @@ fun SearchScreen(
                 if (query.isNotEmpty()) BarButton(Icons.Close, stringResource(R.string.cd_clear)) { onQuery("") }
             }
             val words = if (query.isBlank()) recent else suggestions
-            LazyColumnMMD(modifier = Modifier.fillMaxSize(), isScrollbarVisible = false) {
+            PagedColumn(modifier = Modifier.fillMaxSize()) {
                 if (query.isBlank() && recent.isNotEmpty()) {
                     item(key = "recent") {
                         TextMMD(
@@ -172,7 +171,7 @@ fun WordScreen(
                 at
             }
         }
-        LazyColumnMMD(state = list, modifier = Modifier.padding(padding).fillMaxSize(), isScrollbarVisible = false) {
+        PagedColumn(state = list, modifier = Modifier.padding(padding).fillMaxSize()) {
             if (found.size > 1) {
                 // "running" is also a form of "run", and "run" is usually what was meant; it
                 // should not sit forty meanings down with nothing to say it is there.
@@ -207,7 +206,6 @@ fun WordScreen(
                     }
                 }
             }
-            item(key = "foot") { Spacer(Modifier.height(24.dp)) }
         }
     }
 }
