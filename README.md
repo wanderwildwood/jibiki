@@ -48,7 +48,7 @@ wants to. Most apps built on Android's ordinary text views do; some do not, and 
 nothing this app can do about that from its side.
 
 Among the apps made alongside it, Email ([tayori](https://github.com/wanderwildwood/tayori))
-and Clippings ([kirinuki](https://github.com/wanderwildwood/kirinuki)) already offer it, and
+and Feeds ([kirinuki](https://github.com/wanderwildwood/kirinuki)) already offer it, and
 Typewriter ([dajiki](https://github.com/wanderwildwood/dajiki)) and Notes do from their next
 releases. Swapping
 a word in works where the app asks for the answer back: Email's compose screen and Typewriter
