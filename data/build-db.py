@@ -8,12 +8,27 @@ senses in their usual order, definitions, examples, and four relations
 (antonym between senses; broader, similar and see-also between synsets).
 """
 import gzip
+import re
 import sqlite3
 import sys
+import unicodedata
 import xml.etree.ElementTree as ET
 
 POS = {"n": "n", "v": "v", "a": "a", "s": "a", "r": "r"}
 SYNSET_RELS = {"hypernym": 1, "instance_hypernym": 1, "similar": 2, "also": 3}
+
+
+_MARKS = re.compile(r"[\u0300-\u036f]+")
+_SPECIAL = {"ß": "ss", "æ": "ae", "œ": "oe", "ø": "o", "đ": "d", "ł": "l", "ı": "i"}
+
+
+def fold(text):
+    """Lower-case letters without accents: the key a search is matched on.
+
+    Must stay the same as Forms.fold in the app: both sides of a lookup are folded alike.
+    """
+    plain = _MARKS.sub("", unicodedata.normalize("NFD", text.lower()))
+    return unicodedata.normalize("NFC", "".join(_SPECIAL.get(c, c) for c in plain))
 
 
 def main(src, dst):
@@ -71,8 +86,8 @@ def main(src, dst):
         CREATE TABLE relation (synset INTEGER NOT NULL, kind INTEGER NOT NULL, target INTEGER NOT NULL);
     """)
     db.executemany("INSERT INTO entry VALUES (?,?,?,?,?)",
-                   ((i + 1, e[0], e[0].lower(), e[1], e[2]) for i, e in enumerate(entries)))
-    db.executemany("INSERT INTO form VALUES (?,?)", ((f.lower(), i + 1) for f, i in forms))
+                   ((i + 1, e[0], fold(e[0]), e[1], e[2]) for i, e in enumerate(entries)))
+    db.executemany("INSERT INTO form VALUES (?,?)", ((fold(f), i + 1) for f, i in forms))
     db.executemany("INSERT INTO synset VALUES (?,?,?,?)",
                    ((synset_num[k], v[0], v[1], v[2]) for k, v in synsets.items()))
 
@@ -95,7 +110,7 @@ def main(src, dst):
         CREATE INDEX sense_synset ON sense(synset);
         CREATE INDEX antonym_sense ON antonym(sense);
         CREATE INDEX relation_synset ON relation(synset);
-        PRAGMA user_version = 2025;
+        PRAGMA user_version = 2025001;
     """)
     db.commit()
     db.execute("VACUUM")

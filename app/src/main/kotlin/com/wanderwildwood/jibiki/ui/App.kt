@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.platform.LocalContext
@@ -46,9 +47,15 @@ fun DictionaryApp(
     val stack = rememberSaveable(saver = listSaver()) { mutableStateListOf<String>().apply { start?.let(::add) } }
     var offered by remember { mutableStateOf<String?>(null) }
     val onAbout = { about = true }
+    // Each screen keeps where it was scrolled to (and what was typed) while another is on top,
+    // so Back lands where the page was left, not at its top.
+    val saved = rememberSaveableStateHolder()
 
     fun back() {
-        if (stack.isEmpty() || (start != null && stack.size == 1)) onExit() else stack.removeAt(stack.lastIndex)
+        if (stack.isEmpty() || (start != null && stack.size == 1)) onExit() else {
+            saved.removeState(pageKey(stack.size, stack.last()))
+            stack.removeAt(stack.lastIndex)
+        }
     }
     BackHandler(enabled = stack.isNotEmpty()) { back() }
 
@@ -60,23 +67,30 @@ fun DictionaryApp(
             onBack = start?.let { { onExit() } },
             onAbout = onAbout,
         )
-    } else if (stack.isEmpty()) {
+    } else if (stack.isEmpty()) saved.SaveableStateProvider("search") {
         var query by rememberSaveable { mutableStateOf("") }
-        val suggestions by produceState(emptyList<String>(), query) {
-            value = withContext(Dispatchers.IO) { dict.startingWith(query) }
+        // The list for the query it was asked about: it is kept on screen while the next one
+        // is read, and "nothing matches" is only said once the answer for this query is in.
+        val suggested by produceState(Suggested("", emptyList()), query) {
+            value = Suggested(query, withContext(Dispatchers.IO) { dict.startingWith(query) })
         }
+        var recent by remember { mutableStateOf(Recent.list(context)) }
         SearchScreen(
             query = query,
             onQuery = { query = it },
-            suggestions = suggestions,
-            recent = Recent.list(context),
+            suggestions = suggested.words,
+            answered = suggested.query == query,
+            recent = recent,
+            onClearRecent = { Recent.clear(context); recent = emptyList() },
             onLookUp = { stack.add(it) },
             onAbout = onAbout,
         )
-    } else {
+    } else saved.SaveableStateProvider(pageKey(stack.size, stack.last())) {
         val word = stack.last()
-        if (Forms.clean(word).isEmpty()) {
-            MessageScreen(stringResource(R.string.app_name), stringResource(R.string.too_long), ::back, onAbout)
+        val reading = Forms.reading(word)
+        if (reading != Forms.Reading.Word) {
+            val message = if (reading == Forms.Reading.Nothing) R.string.no_word else R.string.too_long
+            MessageScreen(stringResource(R.string.app_name), stringResource(message), ::back, onAbout)
         } else {
             val page by produceState<Page?>(null, word) {
                 value = withContext(Dispatchers.IO) {
@@ -114,6 +128,11 @@ fun DictionaryApp(
     if (about) AboutDialog(onDismiss = { about = false })
 }
 
+private data class Suggested(val query: String, val words: List<String>)
+
+/** Which stored screen a word on the stack is: the same word can sit in it twice. */
+private fun pageKey(depth: Int, word: String) = "page:$depth:$word"
+
 private data class Page(val found: List<Found>, val near: List<String>)
 
 /** For a word not in the list: the words sharing the longest beginning with it. */
@@ -141,6 +160,10 @@ object Recent {
     fun add(context: Context, word: String) {
         val words = (listOf(word) + list(context).filter { it != word }).take(MAX)
         prefs(context).edit().putString("words", words.joinToString("\n")).apply()
+    }
+
+    fun clear(context: Context) {
+        prefs(context).edit().remove("words").apply()
     }
 
     private fun prefs(context: Context) = context.getSharedPreferences("recent", Context.MODE_PRIVATE)

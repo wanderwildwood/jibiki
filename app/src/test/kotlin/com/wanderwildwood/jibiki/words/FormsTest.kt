@@ -23,6 +23,40 @@ class FormsTest {
         assertEquals("one two three four five", Forms.clean("one two three four five"))
     }
 
+    @Test
+    fun `accents are folded for searching`() {
+        assertEquals("cafe", Forms.fold("café"))
+        assertEquals("senor", Forms.fold("señor"))
+        assertEquals("naive", Forms.fold("naïve"))
+        assertEquals("strasse", Forms.fold("straße"))
+        assertEquals("encyclopaedia", Forms.fold("encyclopædia"))
+        assertEquals("plain", Forms.fold("plain"))
+        // Typed with a combining accent, as some keyboards do
+        assertEquals("cafe", Forms.fold("cafe\u0301"))
+    }
+
+    @Test
+    fun `a selection is looked up by its folded lower-case key`() {
+        assertEquals("cafe", Forms.clean("Café"))
+        assertEquals("cafe", Forms.clean("“CAFÉ,”"))
+        assertEquals("senor", Forms.clean("Señor"))
+        // The page title keeps the spelling it was given
+        assertEquals("Café", Forms.tidy("Café"))
+    }
+
+    @Test
+    fun `nothing word-like is told apart from too long`() {
+        assertEquals(Forms.Reading.Nothing, Forms.reading("("))
+        assertEquals(Forms.Reading.Nothing, Forms.reading("  — "))
+        assertEquals(Forms.Reading.Word, Forms.reading("ice cream"))
+        assertEquals(Forms.Reading.Word, Forms.reading("one two three four five"))
+        assertEquals(Forms.Reading.TooLong, Forms.reading("one two three four five six"))
+        // One string, no spaces, but no word
+        assertEquals(Forms.Reading.TooLong, Forms.reading("a".repeat(Forms.MAX_CHARS + 1)))
+        assertEquals(Forms.Reading.Word, Forms.reading("a".repeat(Forms.MAX_CHARS)))
+        assertEquals("", Forms.clean("("))
+    }
+
     private fun bases(word: String) = Forms.bases(word).map { it.word }
     private fun base(word: String, pos: String) = Forms.bases(word).filter { it.pos == pos }.map { it.word }
 

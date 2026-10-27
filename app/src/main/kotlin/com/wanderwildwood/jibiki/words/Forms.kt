@@ -7,8 +7,56 @@ package com.wanderwildwood.jibiki.words
  */
 object Forms {
 
-    /** Longer than this, a selection is a passage rather than a word, and is not looked up. */
+    /** More words than this, a selection is a passage rather than a word, and is not looked up. */
     const val MAX_WORDS = 5
+
+    /** Longer than this, one string is no word either (a web address, a pasted line). */
+    const val MAX_CHARS = 80
+
+    /** What a selection amounts to for a lookup. */
+    enum class Reading {
+        /** A word or short phrase to look up. */
+        Word,
+        /** Nothing word-like in it: spaces, punctuation. */
+        Nothing,
+        /** A passage, or one string too long to be a word. */
+        TooLong,
+    }
+
+    /** Why [clean] came back empty, or [Reading.Word] when it did not. */
+    fun reading(selection: String): Reading {
+        val text = tidy(selection)
+        return when {
+            text.isEmpty() -> Reading.Nothing
+            text.count { it == ' ' } >= MAX_WORDS || text.length > MAX_CHARS -> Reading.TooLong
+            else -> Reading.Word
+        }
+    }
+
+    private val marks = Regex("""\p{Mn}+""")
+
+    /**
+     * Letters with their accents taken off, for searching: "café" → "cafe", "Zoë" → "zoe".
+     * The dictionary keys its words this way (`data/build-db.py` does the same) and the
+     * headword on the page keeps its own spelling. Lower case in, lower case out.
+     */
+    fun fold(text: String): String {
+        val plain = java.text.Normalizer.normalize(text, java.text.Normalizer.Form.NFD).replace(marks, "")
+        val out = StringBuilder(plain.length)
+        for (c in plain) {
+            when (c) {
+                'ß' -> out.append("ss")
+                'æ' -> out.append("ae")
+                'œ' -> out.append("oe")
+                'ø' -> out.append('o')
+                'đ' -> out.append('d')
+                'ł' -> out.append('l')
+                'ı' -> out.append('i')
+                else -> out.append(c)
+            }
+        }
+        return java.text.Normalizer.normalize(out, java.text.Normalizer.Form.NFC)
+    }
 
     private val edges = Regex("""^[^\p{L}\p{N}]+|[^\p{L}\p{N}.]+$""")
     private val space = Regex("""\s+""")
@@ -17,14 +65,14 @@ object Forms {
      * A selection as the dictionary keys it: trimmed of the punctuation a finger takes with a
      * word ("“Hello,”" → "hello"), curly apostrophes made straight, runs of space made one, and
      * lower case. A trailing full stop is kept only where it belongs to the word ("etc."), which
-     * is decided later by trying both.
+     * is decided later by trying both. Accents are folded off ([fold]).
      *
-     * Empty when nothing word-like is left, or the selection is longer than [MAX_WORDS].
+     * Empty when nothing word-like is left, or the selection is longer than [MAX_WORDS] words
+     * or [MAX_CHARS] characters ([reading] says which).
      */
     fun clean(selection: String): String {
-        val text = tidy(selection)
-        if (text.isEmpty() || text.count { it == ' ' } >= MAX_WORDS) return ""
-        return text.lowercase()
+        if (reading(selection) != Reading.Word) return ""
+        return fold(tidy(selection).lowercase())
     }
 
     /** A selection as it should be shown: [clean] without the lower-casing or the length limit. */

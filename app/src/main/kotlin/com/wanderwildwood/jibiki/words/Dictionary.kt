@@ -48,8 +48,11 @@ class Dictionary private constructor(private val db: SQLiteDatabase) {
             val list = found.getOrPut(key) { mutableListOf() }
             ids.forEach { if (it !in list) list += it }
         }
+        // Accents are folded to find a word, but the entry spelled as typed leads ("Señor"
+        // before "Senor") and gives the page its heading.
+        val typed = Forms.tidy(selection).lowercase()
         for (spelling in Forms.spellings(Forms.clean(selection))) {
-            add(spelling, entryIds(spelling))
+            add(spelling, entryIds(spelling, typed = typed))
             // The entry that owns the form first: "ran" is "run" the verb before "run" the noun.
             for ((base, owner) in irregular(spelling)) add(base, listOf(owner) + entryIds(base))
             for (base in Forms.bases(spelling)) add(base.word, entryIds(base.word, base.pos))
@@ -72,11 +75,13 @@ class Dictionary private constructor(private val db: SQLiteDatabase) {
         ).use { c -> buildList { while (c.moveToNext()) add(c.getString(0)) } }
     }
 
-    private fun entryIds(key: String, pos: String? = null): List<Long> =
+    private fun entryIds(key: String, pos: String? = null, typed: String = ""): List<Long> =
         (
-            if (pos == null) db.rawQuery("SELECT id FROM entry WHERE key = ? ORDER BY id", arrayOf(key))
-            else db.rawQuery("SELECT id FROM entry WHERE key = ? AND pos = ? ORDER BY id", arrayOf(key, pos))
-        ).use { c -> buildList { while (c.moveToNext()) add(c.getLong(0)) } }
+            if (pos == null) db.rawQuery("SELECT id, lemma FROM entry WHERE key = ? ORDER BY id", arrayOf(key))
+            else db.rawQuery("SELECT id, lemma FROM entry WHERE key = ? AND pos = ? ORDER BY id", arrayOf(key, pos))
+        ).use { c -> buildList { while (c.moveToNext()) add(c.getLong(0) to c.getString(1)) } }
+            .sortedBy { it.second.lowercase() != typed }
+            .map { it.first }
 
     /** The words [key] is an irregular form of, each with the entry that lists it. */
     private fun irregular(key: String): List<Pair<String, Long>> =
@@ -132,7 +137,7 @@ class Dictionary private constructor(private val db: SQLiteDatabase) {
 
     companion object {
         /** Bumped with each edition `data/build-db.py` is run on; it is the database's user_version. */
-        private const val EDITION = 2025
+        private const val EDITION = 2025001
         /**
          * ⚠ The source tree holds `assets/wordnet.db.gz`, to keep 16 MB out of git, but the
          * Android asset packer un-gzips any `.gz` asset and stores it under the name without

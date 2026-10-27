@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
@@ -20,9 +22,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.foundation.lazy.rememberLazyListState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +49,7 @@ import com.mudita.mmd.components.text_field.TextFieldMMD
 import com.mudita.mmd.components.top_app_bar.TopAppBarMMD
 import com.wanderwildwood.jibiki.R
 import com.wanderwildwood.jibiki.words.Entry
+import com.wanderwildwood.jibiki.words.Forms
 import com.wanderwildwood.jibiki.words.Found
 import com.wanderwildwood.jibiki.words.Sense
 
@@ -81,7 +88,9 @@ fun SearchScreen(
     query: String,
     onQuery: (String) -> Unit,
     suggestions: List<String>,
+    answered: Boolean,
     recent: List<String>,
+    onClearRecent: () -> Unit,
     onLookUp: (String) -> Unit,
     onAbout: () -> Unit,
 ) {
@@ -122,10 +131,47 @@ fun SearchScreen(
                 for (word in words) {
                     item(key = "w:$word") { WordRow(word) { onLookUp(word) } }
                 }
+                if (query.isBlank() && recent.isNotEmpty()) {
+                    item(key = "clear") { ClearRow(onClearRecent) }
+                }
+                if (query.isNotBlank() && answered && suggestions.isEmpty()) {
+                    item(key = "nothing") {
+                        TextMMD(
+                            text = stringResource(R.string.no_word_starts, Forms.tidy(query).ifEmpty { query.trim() }),
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(20.dp),
+                        )
+                    }
+                }
             }
         }
     }
 }
+
+/** "Clear this list", which asks again before it does: armed for [ARM_MS], then it forgets. */
+@Composable
+private fun ClearRow(onClear: () -> Unit) {
+    var armed by remember { mutableStateOf(false) }
+    LaunchedEffect(armed) {
+        if (armed) {
+            delay(ARM_MS)
+            armed = false
+        }
+    }
+    TextMMD(
+        text = stringResource(if (armed) R.string.clear_recent_again else R.string.clear_recent),
+        style = MaterialTheme.typography.bodyMedium,
+        textDecoration = TextDecoration.Underline,
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 48.dp)
+            .clickable { if (armed) { armed = false; onClear() } else armed = true }
+            .padding(horizontal = 20.dp, vertical = 12.dp),
+    )
+}
+
+/** How long a "tap again" stays armed. */
+const val ARM_MS = 6000L
 
 @Composable
 private fun WordRow(word: String, onClick: () -> Unit) {
@@ -134,6 +180,7 @@ private fun WordRow(word: String, onClick: () -> Unit) {
         style = MaterialTheme.typography.bodyLarge,
         modifier = Modifier
             .fillMaxWidth()
+            .heightIn(min = 48.dp)
             .clickable(onClick = onClick)
             .padding(horizontal = 20.dp, vertical = 12.dp),
     )
@@ -281,20 +328,27 @@ private fun WordList(label: String, words: List<String>, onWord: (String) -> Uni
     if (words.isEmpty()) return
     FlowRow(
         verticalArrangement = Arrangement.Center,
+        itemVerticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(top = 4.dp),
     ) {
         Box(Modifier.padding(end = 6.dp, top = 8.dp, bottom = 8.dp)) {
             TextMMD(text = "$label:", style = MaterialTheme.typography.labelSmall)
         }
         for (word in words) {
-            TextMMD(
-                text = word,
-                style = MaterialTheme.typography.bodyMedium,
-                textDecoration = TextDecoration.Underline,
+            Box(
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
+                    .heightIn(min = 48.dp)
+                    .widthIn(min = 48.dp)
                     .clickable { onWord(word) }
-                    .padding(horizontal = 6.dp, vertical = 6.dp),
-            )
+                    .padding(horizontal = 6.dp),
+            ) {
+                TextMMD(
+                    text = word,
+                    style = MaterialTheme.typography.bodyMedium,
+                    textDecoration = TextDecoration.Underline,
+                )
+            }
         }
     }
 }

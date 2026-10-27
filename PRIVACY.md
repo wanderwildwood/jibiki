@@ -1,6 +1,6 @@
 # Dictionary — Privacy Policy
 
-Version 0.1.5. Last reviewed 23 October 2026.
+Version 0.1.6. Last reviewed 23 October 2026.
 
 ## The short version
 
@@ -14,7 +14,7 @@ Because no personal data is transmitted to or held by the developer, there is no
 
 ## What the app stores, and where
 
-In its own private storage on the phone: a copy of the word list, unpacked from the app on first use, and the last 30 words you looked up, so the search field can offer them again. Nothing else. The app is left out of Android's backups (`allowBackup="false"`), the word list sits in a folder Android does not back up, and uninstalling the app removes all of it. There is no cloud copy and no copy held by the developer.
+In its own private storage on the phone: a copy of the word list, unpacked from the app on first use, and the last 30 words you looked up, so the search field can offer them again (the "Clear this list" line in the search screen removes them). Nothing else. The app is left out of Android's backups (`allowBackup="false"`), the word list sits in a folder Android does not back up, and uninstalling the app removes all of it. There is no cloud copy and no copy held by the developer.
 
 The word list is Open English WordNet 2025 (CC BY 4.0), bundled in the app. Looking a word up reads that file on the phone and talks to nothing.
 

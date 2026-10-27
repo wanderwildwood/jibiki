@@ -5,13 +5,18 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,25 +41,37 @@ import com.wanderwildwood.jibiki.R
 @Composable
 fun AboutDialog(onDismiss: () -> Unit) {
     EInkDialog(onDismiss = onDismiss) {
-        TextMMD(
-            text = stringResource(R.string.about_title, BuildConfig.VERSION_NAME),
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Medium,
-        )
+        // The words scroll; Close stays in view under them (the dialog itself cannot scroll).
+        Column(Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState())) {
+            TextMMD(
+                text = stringResource(R.string.about_title, BuildConfig.VERSION_NAME),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium,
+            )
 
-        Spacer(Modifier.height(14.dp))
-        TextMMD(text = stringResource(R.string.about_what), style = MaterialTheme.typography.labelSmall)
+            Spacer(Modifier.height(14.dp))
+            TextMMD(text = stringResource(R.string.about_what), style = MaterialTheme.typography.labelSmall)
 
-        Spacer(Modifier.height(14.dp))
-        TextMMD(text = stringResource(R.string.about_licence), style = MaterialTheme.typography.labelSmall)
-        TextMMD(text = stringResource(R.string.about_wordnet), style = MaterialTheme.typography.labelSmall)
-        TextMMD(text = stringResource(R.string.about_icons), style = MaterialTheme.typography.labelSmall)
+            Spacer(Modifier.height(14.dp))
+            TextMMD(text = stringResource(R.string.about_licence), style = MaterialTheme.typography.labelSmall)
+            TextMMD(text = stringResource(R.string.about_wordnet), style = MaterialTheme.typography.labelSmall)
+            TextMMD(text = stringResource(R.string.about_icons), style = MaterialTheme.typography.labelSmall)
+            TextMMD(text = stringResource(R.string.about_fonts), style = MaterialTheme.typography.labelSmall)
 
-        Spacer(Modifier.height(14.dp))
-        TextMMD(text = "github.com/wanderwildwood/jibiki", style = MaterialTheme.typography.labelSmall)
+            Spacer(Modifier.height(14.dp))
+            TextMMD(text = stringResource(R.string.about_privacy_title), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+            TextMMD(text = stringResource(R.string.about_privacy), style = MaterialTheme.typography.labelSmall)
 
-        Spacer(Modifier.height(14.dp))
-        Llama()
+            Spacer(Modifier.height(14.dp))
+            TextMMD(text = stringResource(R.string.about_terms_title), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+            TextMMD(text = stringResource(R.string.about_terms), style = MaterialTheme.typography.labelSmall)
+
+            Spacer(Modifier.height(14.dp))
+            TextMMD(text = "github.com/wanderwildwood/jibiki", style = MaterialTheme.typography.labelSmall)
+
+            Spacer(Modifier.height(14.dp))
+            Llama()
+        }
 
         Spacer(Modifier.height(18.dp))
         OutlinedButtonMMD(
@@ -94,7 +111,7 @@ private fun Llama() {
                         Toast.makeText(context, context.getString(R.string.about_no_browser), Toast.LENGTH_SHORT).show()
                     }
                 }
-                .padding(vertical = 4.dp),
+                .heightIn(min = 48.dp).wrapContentHeight(Alignment.CenterVertically),
         )
         Spacer(Modifier.width(6.dp))
         Row(
@@ -109,7 +126,7 @@ private fun Llama() {
                         Toast.makeText(context, context.getString(R.string.about_no_browser), Toast.LENGTH_SHORT).show()
                     }
                 }
-                .padding(vertical = 4.dp),
+                .heightIn(min = 48.dp).wrapContentHeight(Alignment.CenterVertically),
         ) {
             Image(
                 painter = painterResource(R.drawable.llama),

@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalCursorBlinkEnabled
 import com.mudita.mmd.ThemeMMD
 import com.wanderwildwood.jibiki.ui.DictionaryApp
 import com.wanderwildwood.jibiki.ui.monochrome
@@ -25,13 +27,17 @@ class DefineActivity : ComponentActivity() {
         }
         val writable = !intent.getBooleanExtra(Intent.EXTRA_PROCESS_TEXT_READONLY, false) && callingActivity != null
         setContent {
-            ThemeMMD(colorScheme = monochrome) {
-                DictionaryApp(
-                    start = selection,
-                    selection = selection,
-                    onReplace = if (writable) { word -> replaceWith(selection, word) } else null,
-                    onExit = ::finish,
-                )
+            // A steady cursor: a blinking one repaints the panel twice a second for as long
+            // as the search field has focus.
+            CompositionLocalProvider(LocalCursorBlinkEnabled provides false) {
+                ThemeMMD(colorScheme = monochrome) {
+                    DictionaryApp(
+                        start = selection,
+                        selection = selection,
+                        onReplace = if (writable) { word -> replaceWith(selection, word) } else null,
+                        onExit = ::finish,
+                    )
+                }
             }
         }
     }
