@@ -66,8 +66,8 @@ fun AboutDialog(onDismiss: () -> Unit) {
             TextMMD(text = stringResource(R.string.about_terms_title), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
             TextMMD(text = stringResource(R.string.about_terms), style = MaterialTheme.typography.labelSmall)
 
-            Spacer(Modifier.height(14.dp))
-            TextMMD(text = "github.com/wanderwildwood/jibiki", style = MaterialTheme.typography.labelSmall)
+            Spacer(Modifier.height(6.dp))
+            SourceLink()
 
             Spacer(Modifier.height(14.dp))
             Llama()
@@ -79,6 +79,30 @@ fun AboutDialog(onDismiss: () -> Unit) {
             modifier = Modifier.fillMaxWidth().height(48.dp),
         ) { TextMMD(text = stringResource(R.string.about_close), style = MaterialTheme.typography.bodySmall) }
     }
+}
+
+/**
+ * The source code's address, which opens it in a browser: the licence promises the source, so
+ * it is a link. A phone with no browser says so rather than leaving a press that does nothing.
+ */
+@Composable
+private fun SourceLink() {
+    val context = LocalContext.current
+    TextMMD(
+        text = "github.com/wanderwildwood/jibiki",
+        style = MaterialTheme.typography.labelSmall,
+        modifier = Modifier
+            .clickable {
+                runCatching {
+                    context.startActivity(
+                        Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/wanderwildwood/jibiki")),
+                    )
+                }.onFailure {
+                    Toast.makeText(context, context.getString(R.string.about_no_browser), Toast.LENGTH_SHORT).show()
+                }
+            }
+            .heightIn(min = 48.dp).wrapContentHeight(Alignment.CenterVertically),
+    )
 }
 
 /**
