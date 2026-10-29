@@ -54,15 +54,25 @@
 
     <string name="about_title">Dictionary %1$s</string>
     <string name="about_what">Select a word in another app and choose Define. Nothing leaves the phone: the whole word list is inside the app.</string>
-    <string name="about_licence">This app: GNU General Public License v3</string>
-    <string name="about_wordnet">Words: Open English WordNet 2025, CC BY 4.0, after Princeton WordNet 3.0 (WordNet 3.0 licence, Princeton University)</string>
-    <string name="about_icons">Icons: Material Symbols, Apache 2.0</string>
-    <string name="about_fonts">Font: Lato, SIL Open Font License 1.1, with the Mudita MMD library</string>
     <string name="about_privacy_title">Privacy</string>
     <string name="about_privacy">Everything stays on this phone. The app has no internet access, so nothing is sent anywhere, and nothing is collected about you. When you choose Define in another app, it receives only the text you selected. It keeps the last 30 words you looked up, on this phone only; Clear this list removes them. There are no ads, no analytics and no tracking. Pressing the donation or website line opens your browser.</string>
     <string name="about_terms_title">Terms</string>
     <string name="about_terms">This app is free software under the GNU General Public License v3. It comes with no warranty: use it at your own risk.</string>
     <string name="about_feed_the_llamas">feed the llamas</string>
-    <string name="about_no_browser">There is no browser on this phone to open that with.</string>
+    <string name="about_no_browser">No browser is installed.</string>
     <string name="about_close">Close</string>
+
+    <!-- Licences page, reached from About -->
+    <string name="licences_title">Licences</string>
+    <string name="licences_source_heading">Source code</string>
+    <string name="licences_source">Source: %1$s</string>
+    <string name="licences_licence_heading">Licence</string>
+    <string name="licences_licence">Dictionary is free software under the GNU General Public License, version 3 only. Copyright wander wildwood. The full text is below.</string>
+    <string name="licences_built_heading">Built with</string>
+    <string name="licences_gpl">GNU General Public License, version 3</string>
+    <string name="licences_apache">Apache License, version 2.0</string>
+    <string name="licences_ofl">SIL Open Font License, version 1.1</string>
+    <string name="licences_cc_by_4_0">Creative Commons Attribution 4.0 International</string>
+    <string name="licences_wordnet_3_0">WordNet 3.0 licence, Princeton University</string>
+    <string name="licences_no_browser">No browser is installed.</string>
 </resources>

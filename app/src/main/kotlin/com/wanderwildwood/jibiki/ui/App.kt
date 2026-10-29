@@ -60,7 +60,9 @@ fun DictionaryApp(
     BackHandler(enabled = stack.isNotEmpty()) { back() }
 
     val dict = dictionary
-    if (dict == null) {
+    if (about) {
+        AboutScreen(onBack = { about = false })
+    } else if (dict == null) {
         MessageScreen(
             title = stringResource(R.string.app_name),
             message = if (Dictionary.needsUnpacking(context)) stringResource(R.string.unpacking) else "",
@@ -125,7 +127,6 @@ fun DictionaryApp(
             onDismiss = { offered = null },
         )
     }
-    if (about) AboutDialog(onDismiss = { about = false })
 }
 
 private data class Suggested(val query: String, val words: List<String>)
