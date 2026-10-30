@@ -50,7 +50,7 @@ const val SOURCE_URL = "https://github.com/wanderwildwood/jibiki"
  */
 val LIBRARIES: List<Library> =
     listOf(
-        Library("Open English WordNet 2025", "The Open English WordNet Team", "CC-BY-4.0", "https://github.com/globalwordnet/english-wordnet"),
+        Library("Open English WordNet 2025 (changed: converted to a compact database, the wording is unchanged)", "The Open English WordNet Team", "CC-BY-4.0", "https://github.com/globalwordnet/english-wordnet"),
         Library("Princeton WordNet 3.0, underlying the word list", "Princeton University", "WordNet 3.0 licence", "https://wordnet.princeton.edu"),
         Library("Mudita Mindful Design (MMD)", "Mudita", "Apache-2.0", "https://github.com/mudita/MMD"),
         Library("Lato typeface, inside MMD", "tyPoland Lukasz Dziedzic", "OFL-1.1", "https://www.latofonts.com"),
@@ -154,7 +154,7 @@ private fun Paragraph(text: String) {
 @Composable
 private fun Link(text: String, address: String) {
     val context = LocalContext.current
-    val none = stringResource(R.string.licences_no_browser)
+    val none = stringResource(R.string.about_no_browser_address, address)
     TextMMD(
         text = text,
         style = MaterialTheme.typography.bodySmall,
@@ -164,8 +164,7 @@ private fun Link(text: String, address: String) {
                 .fillMaxWidth()
                 .heightIn(min = 48.dp)
                 .clickable {
-                    runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(address))) }
-                        .onFailure { Toast.makeText(context, none, Toast.LENGTH_SHORT).show() }
+                    openLink(context, address, none)
                 }
                 .wrapContentHeight(Alignment.CenterVertically),
     )

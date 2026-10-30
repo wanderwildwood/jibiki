@@ -143,13 +143,7 @@ private fun Llama() {
             // The site's address opens the site, the way the llama beside it opens its page.
             modifier = Modifier
                 .clickable {
-                    runCatching {
-                        context.startActivity(
-                            Intent(Intent.ACTION_VIEW, Uri.parse("https://wanderthe.dev")),
-                        )
-                    }.onFailure {
-                        Toast.makeText(context, context.getString(R.string.about_no_browser), Toast.LENGTH_SHORT).show()
-                    }
+                    openLink(context, "https://wanderthe.dev", context.getString(R.string.about_no_browser_address, "wanderthe.dev"))
                 }
                 .heightIn(min = 48.dp).wrapContentHeight(Alignment.CenterVertically),
         )
@@ -158,13 +152,7 @@ private fun Llama() {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .clickable {
-                    runCatching {
-                        context.startActivity(
-                            Intent(Intent.ACTION_VIEW, Uri.parse("https://square.link/u/AGu8oT10")),
-                        )
-                    }.onFailure {
-                        Toast.makeText(context, context.getString(R.string.about_no_browser), Toast.LENGTH_SHORT).show()
-                    }
+                    openLink(context, "https://square.link/u/AGu8oT10", context.getString(R.string.about_no_browser_address, "square.link/u/AGu8oT10"))
                 }
                 .heightIn(min = 48.dp).wrapContentHeight(Alignment.CenterVertically),
         ) {
