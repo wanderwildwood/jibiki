@@ -14,8 +14,8 @@ ships with.
 
 | | |
 |---|---|
-| ![Define, beside Copy, over a word in an email](screenshots/1-define.png) | ![What the word means, and its other words](screenshots/2-word.png) |
-| ![Putting another word in its place](screenshots/3-swap.png) | ![Looking a word up from the app itself](screenshots/4-search.png) |
+| ![Looking a word up from the app itself](screenshots/1-search.png) | ![What the word means, and its other words](screenshots/2-word.png) |
+| ![About: Privacy, Terms and Licences](screenshots/3-about.png) | ![Licences: the source, the GPL and what it is built with](screenshots/4-licences.png) |
 
 ## What it does
 
