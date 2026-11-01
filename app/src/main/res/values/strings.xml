@@ -66,10 +66,9 @@
     <!-- Licences page, reached from About -->
     <string name="licences_title">Licences</string>
     <string name="licences_source_head">Source code</string>
+    <string name="licences_no_text">%s needs no licence text here.</string>
     <string name="licences_source">Source: %1$s</string>
-    <string name="licences_licence_head">Licence</string>
     <string name="licences_licence">Dictionary is free software under the GNU General Public License, version 3 only. Copyright wander wildwood.</string>
-    <string name="licences_built_head">Built with</string>
     <string name="licences_cc_by_4_0">Creative Commons Attribution 4.0 International</string>
     <string name="licences_wordnet_3_0">WordNet 3.0 licence, Princeton University</string>
     <string name="licences_back">Back</string>
