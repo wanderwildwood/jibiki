@@ -47,12 +47,12 @@ Since Android 11, an app sees other apps' text actions only if it says in its ma
 wants to. Most apps built on Android's ordinary text views do; some do not, and there is
 nothing this app can do about that from its side.
 
-Among the apps made alongside it, Email ([tayori](https://github.com/wanderwildwood/tayori))
+Among the apps made alongside it, Mailbox ([tayori](https://github.com/wanderwildwood/tayori))
 and Feeds ([kirinuki](https://github.com/wanderwildwood/kirinuki)) already offer it, and
-Typewriter ([dajiki](https://github.com/wanderwildwood/dajiki)) and Notes do from their next
+Typewriter ([dajiki](https://github.com/wanderwildwood/dajiki)) and Memo do from their next
 releases. Swapping
-a word in works where the app asks for the answer back: Email's compose screen and Typewriter
-both do. Notes, being Jetpack Compose, opens Define to read only, which is Compose's own
+a word in works where the app asks for the answer back: Mailbox's compose screen and Typewriter
+both do. Memo, being Jetpack Compose, opens Define to read only, which is Compose's own
 default.
 
 ## The word list
