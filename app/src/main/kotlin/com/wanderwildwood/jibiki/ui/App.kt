@@ -50,6 +50,10 @@ fun DictionaryApp(
     // Each screen keeps where it was scrolled to (and what was typed) while another is on top,
     // so Back lands where the page was left, not at its top.
     val saved = rememberSaveableStateHolder()
+    // The last answer to the search box, held out here so that coming Back to the search screen
+    // starts from it rather than from an empty list, which would reset the scroll to the top
+    // before the new answer arrived.
+    var lastSuggested by remember { mutableStateOf(Suggested("", emptyList())) }
 
     fun back() {
         if (stack.isEmpty() || (start != null && stack.size == 1)) onExit() else {
@@ -73,8 +77,9 @@ fun DictionaryApp(
         var query by rememberSaveable { mutableStateOf("") }
         // The list for the query it was asked about: it is kept on screen while the next one
         // is read, and "nothing matches" is only said once the answer for this query is in.
-        val suggested by produceState(Suggested("", emptyList()), query) {
+        val suggested by produceState(lastSuggested, query) {
             value = Suggested(query, withContext(Dispatchers.IO) { dict.startingWith(query) })
+            lastSuggested = value
         }
         var recent by remember { mutableStateOf(Recent.list(context)) }
         SearchScreen(
