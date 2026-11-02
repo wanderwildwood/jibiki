@@ -64,9 +64,8 @@ fun DictionaryApp(
     BackHandler(enabled = stack.isNotEmpty()) { back() }
 
     val dict = dictionary
-    if (about) {
-        AboutScreen(onBack = { about = false })
-    } else if (dict == null) {
+    if (about) AboutDialog(onDismiss = { about = false })
+    if (dict == null) {
         MessageScreen(
             title = stringResource(R.string.app_name),
             message = if (Dictionary.needsUnpacking(context)) stringResource(R.string.unpacking) else "",
