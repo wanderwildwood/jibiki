@@ -1,0 +1,14 @@
+{
+  "uniqueId": "princeton-wordnet",
+  "name": "Princeton WordNet 3.0",
+  "description": "Underlies the word list: Open English WordNet grew out of it.",
+  "developers": [
+    {
+      "name": "Princeton University"
+    }
+  ],
+  "website": "https://wordnet.princeton.edu",
+  "licenses": [
+    "wordnet-3.0"
+  ]
+}

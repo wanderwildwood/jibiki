@@ -1,0 +1,14 @@
+{
+  "uniqueId": "open-english-wordnet",
+  "name": "Open English WordNet 2025",
+  "description": "The word list, bundled in the app. Changed: converted to a compact database; the wording is unchanged.",
+  "developers": [
+    {
+      "name": "The Open English WordNet Team"
+    }
+  ],
+  "website": "https://github.com/globalwordnet/english-wordnet",
+  "licenses": [
+    "CC-BY-4.0"
+  ]
+}
