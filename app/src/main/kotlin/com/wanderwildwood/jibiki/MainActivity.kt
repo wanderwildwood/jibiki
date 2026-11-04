@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalCursorBlinkEnabled
 import com.mudita.mmd.ThemeMMD
 import com.wanderwildwood.jibiki.ui.DictionaryApp
 import com.wanderwildwood.jibiki.ui.monochrome
+import com.wanderwildwood.jibiki.ui.ArmedScope
 
 /** The home-screen entry: a field to type a word into. */
 class MainActivity : ComponentActivity() {
@@ -18,7 +19,7 @@ class MainActivity : ComponentActivity() {
             // as the search field has focus.
             CompositionLocalProvider(LocalCursorBlinkEnabled provides false) {
                 ThemeMMD(colorScheme = monochrome) {
-                    DictionaryApp(start = null)
+                    ArmedScope { DictionaryApp(start = null) }
                 }
             }
         }

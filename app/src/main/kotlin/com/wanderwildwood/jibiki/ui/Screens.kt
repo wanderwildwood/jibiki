@@ -23,12 +23,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.foundation.lazy.rememberLazyListState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -148,16 +146,10 @@ fun SearchScreen(
     }
 }
 
-/** "Clear this list", which asks again before it does: armed for [ARM_MS], then it forgets. */
+/** "Clear this list", which asks again before it does: it stays armed until the next other touch, Back or leaving. */
 @Composable
 private fun ClearRow(onClear: () -> Unit) {
-    var armed by remember { mutableStateOf(false) }
-    LaunchedEffect(armed) {
-        if (armed) {
-            delay(ARM_MS)
-            armed = false
-        }
-    }
+    var armed by rememberArmedFlag()
     TextMMD(
         text = stringResource(if (armed) R.string.clear_recent_again else R.string.clear_recent),
         style = MaterialTheme.typography.bodyMedium,
@@ -169,9 +161,6 @@ private fun ClearRow(onClear: () -> Unit) {
             .padding(horizontal = 20.dp, vertical = 12.dp),
     )
 }
-
-/** How long a "tap again" stays armed. */
-const val ARM_MS = 6000L
 
 @Composable
 private fun WordRow(word: String, onClick: () -> Unit) {
