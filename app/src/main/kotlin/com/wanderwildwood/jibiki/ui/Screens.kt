@@ -349,11 +349,11 @@ private fun WordList(label: String, words: List<String>, onWord: (String) -> Uni
 @Composable
 fun ReplaceDialog(word: String, selection: String, onUse: () -> Unit, onLookUp: () -> Unit, onDismiss: () -> Unit) {
     EInkDialog(onDismiss = onDismiss) {
-        OutlinedButtonMMD(onClick = onUse, modifier = Modifier.fillMaxWidth().height(56.dp)) {
+        OutlinedButtonMMD(onClick = onUse, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) {
             TextMMD(text = stringResource(R.string.replace_use, word, selection), style = MaterialTheme.typography.bodySmall)
         }
         Spacer(Modifier.height(12.dp))
-        OutlinedButtonMMD(onClick = onLookUp, modifier = Modifier.fillMaxWidth().height(56.dp)) {
+        OutlinedButtonMMD(onClick = onLookUp, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) {
             TextMMD(text = stringResource(R.string.replace_look_up, word), style = MaterialTheme.typography.bodySmall)
         }
     }
