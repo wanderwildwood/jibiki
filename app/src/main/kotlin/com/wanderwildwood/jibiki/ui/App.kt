@@ -114,6 +114,10 @@ fun DictionaryApp(
                 val translate = remember(word, p.found.isEmpty()) {
                     if (p.found.isEmpty()) TranslateApp.intent(context, Forms.tidy(word)) else null
                 }
+                // Asked again on the press: Translate may have gone since the page was drawn.
+                val onTranslate: (() -> Unit)? = if (translate == null) null else {
+                    { TranslateApp.intent(context, Forms.tidy(word))?.let(context::startActivity) }
+                }
                 WordScreen(
                     title = Forms.tidy(word),
                     found = p.found,
@@ -121,7 +125,7 @@ fun DictionaryApp(
                     onWord = { w -> if (onReplace != null) offered = w else stack.add(w) },
                     onBack = ::back,
                     onAbout = onAbout,
-                    onTranslate = translate?.let { intent -> { context.startActivity(intent) } },
+                    onTranslate = onTranslate,
                 )
             }
         }
