@@ -110,6 +110,10 @@ fun DictionaryApp(
                 // Not "not found" while it is still looking: an empty page would say that.
                 MessageScreen(Forms.tidy(word), "", ::back, onAbout)
             } else {
+                // Only for a word the list does not have, and only with Translate on the phone.
+                val translate = remember(word, p.found.isEmpty()) {
+                    if (p.found.isEmpty()) TranslateApp.intent(context, Forms.tidy(word)) else null
+                }
                 WordScreen(
                     title = Forms.tidy(word),
                     found = p.found,
@@ -117,6 +121,7 @@ fun DictionaryApp(
                     onWord = { w -> if (onReplace != null) offered = w else stack.add(w) },
                     onBack = ::back,
                     onAbout = onAbout,
+                    onTranslate = translate?.let { intent -> { context.startActivity(intent) } },
                 )
             }
         }

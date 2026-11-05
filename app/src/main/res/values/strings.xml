@@ -18,6 +18,8 @@
     <!-- %1$s is the word that was asked for -->
     <string name="not_found">“%1$s” is not in this dictionary.</string>
     <string name="not_found_near">Words that begin the same way:</string>
+    <!-- The last row under a word not found, shown when Translate is on the phone; %1$s is the word -->
+    <string name="not_found_translate">Translate “%1$s”</string>
     <string name="too_long">That is too long to look up. Select a single word or a short phrase.</string>
     <string name="no_word">There is no word in that selection.</string>
     <!-- %1$s is what has been typed -->

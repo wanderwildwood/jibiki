@@ -181,6 +181,7 @@ private fun WordRow(word: String, onClick: () -> Unit) {
  *
  * Every word on the page that is not the one being read about can be pressed, to look it up
  * in turn or, when [onWord] says so, to put it in the other app in place of the selection.
+ * A word not found at all can be handed to Translate, when [onTranslate] is given.
  */
 @Composable
 fun WordScreen(
@@ -190,6 +191,7 @@ fun WordScreen(
     onWord: (String) -> Unit,
     onBack: () -> Unit,
     onAbout: () -> Unit,
+    onTranslate: (() -> Unit)? = null,
 ) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.surface,
@@ -231,6 +233,10 @@ fun WordScreen(
                     }
                 }
                 for (word in near) item(key = "near:$word") { WordRow(word) { onWord(word) } }
+                // After the near words, which are more often what was meant: a typing slip.
+                if (onTranslate != null) item(key = "translate") {
+                    WordRow(stringResource(R.string.not_found_translate, title), onTranslate)
+                }
             }
             found.forEachIndexed { i, f ->
                 if (i > 0) item(key = "rule:$i") { HorizontalDividerMMD(modifier = Modifier.padding(vertical = 8.dp)) }
