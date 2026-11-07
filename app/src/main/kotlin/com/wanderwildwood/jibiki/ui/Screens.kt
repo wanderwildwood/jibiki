@@ -116,7 +116,7 @@ fun SearchScreen(
                 if (query.isNotEmpty()) BarButton(Icons.Close, stringResource(R.string.cd_clear)) { onQuery("") }
             }
             val words = if (query.isBlank()) recent else suggestions
-            PagedColumn(modifier = Modifier.fillMaxSize()) {
+            PagedColumn(modifier = Modifier.fillMaxSize(), showCutRow = true) {
                 if (query.isBlank() && recent.isNotEmpty()) {
                     item(key = "recent") {
                         TextMMD(
@@ -209,7 +209,7 @@ fun WordScreen(
                 at
             }
         }
-        PagedColumn(state = list, modifier = Modifier.padding(padding).fillMaxSize()) {
+        PagedColumn(state = list, modifier = Modifier.padding(padding).fillMaxSize(), showCutRow = true) {
             if (found.size > 1) {
                 // "running" is also a form of "run", and "run" is usually what was meant; it
                 // should not sit forty meanings down with nothing to say it is there.
