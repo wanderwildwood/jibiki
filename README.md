@@ -15,7 +15,7 @@ ships with.
 | | |
 |---|---|
 | ![Looking a word up from the app itself](screenshots/1-search.png) | ![What the word means, and its other words](screenshots/2-word.png) |
-| ![About: Privacy, Terms and Licences](screenshots/3-about.png) | ![Licences: the source, the GPL and what it is built with](screenshots/4-licences.png) |
+| ![About: Privacy, Terms and Licenses](screenshots/3-about.png) | ![Licenses: the source, the GPL and what it is built with](screenshots/4-licences.png) |
 
 ## What it does
 
@@ -26,7 +26,7 @@ ships with.
 - **A thesaurus on the same page.** Under each meaning: other words for it, the opposite, words
   close to it, and the broader word it is a kind of. Every one of them can be pressed.
 - **Swaps a word in.** When the selection came from a field you are writing in, pressing a word
-  offers to put it there in place of the one you selected, capitalised the same way.
+  offers to put it there in place of the one you selected, capitalized the same way.
 - **Finds the word under its endings.** *Ran* opens *run*, *geese* opens *goose*, *stopped*
   opens *stop*, and *running* shows both *running* and *run*, with a line at the top to jump
   between them.
@@ -92,7 +92,7 @@ For updates without doing this by hand, add this repository to
 
 Privacy: what the app stores and what it sends is set out in [PRIVACY.md](PRIVACY.md).
 
-## Licence
+## License
 
 GPL-3.0-only. See [LICENSE](LICENSE).
 
