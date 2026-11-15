@@ -10,6 +10,7 @@ import com.mudita.mmd.ThemeMMD
 import com.wanderwildwood.jibiki.ui.DictionaryApp
 import com.wanderwildwood.jibiki.ui.houseTypography
 import com.wanderwildwood.jibiki.ui.monochrome
+import com.wanderwildwood.jibiki.ui.DarkSelection
 import com.wanderwildwood.jibiki.ui.ArmedScope
 
 /**
@@ -32,7 +33,7 @@ class DefineActivity : ComponentActivity() {
             // A steady cursor: a blinking one repaints the panel twice a second for as long
             // as the search field has focus.
             CompositionLocalProvider(LocalCursorBlinkEnabled provides false) {
-                ThemeMMD(colorScheme = monochrome, typography = houseTypography) {
+                ThemeMMD(colorScheme = monochrome, typography = houseTypography) { DarkSelection {
                     ArmedScope {
                         DictionaryApp(
                             start = selection,
@@ -41,7 +42,7 @@ class DefineActivity : ComponentActivity() {
                             onExit = ::finish,
                         )
                     }
-                }
+                } }
             }
         }
     }
