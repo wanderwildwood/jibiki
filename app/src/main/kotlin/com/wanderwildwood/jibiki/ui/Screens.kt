@@ -258,7 +258,7 @@ private fun Heading(found: Found) {
     // verb sound the same; where parts of speech differ ("record"), each says its own below.
     val ipa = found.entries.firstNotNullOfOrNull { it.ipa }
     Column(Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp)) {
-        TextMMD(text = found.word, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+        TextMMD(text = found.word, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         if (ipa != null) TextMMD(text = "/$ipa/", style = MaterialTheme.typography.bodyMedium)
     }
 }
