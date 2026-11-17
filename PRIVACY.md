@@ -1,6 +1,6 @@
 # Dictionary — Privacy Policy
 
-Version 0.1.6. Last reviewed 4 November 2026.
+Version 0.1.26. Last reviewed 17 November 2026.
 
 ## The short version
 
@@ -34,7 +34,7 @@ Since Dictionary keeps what it stores only on your phone, you can exercise most 
 
 ## What the app stores, and where
 
-In its own private storage on the phone: a copy of the word list, unpacked from the app on first use, and the last 30 words you looked up, so the search field can offer them again (the "Clear this list" line in the search screen removes them). Nothing else. The app is left out of Android's backups (`allowBackup="false"`), the word list sits in a folder Android does not back up, and uninstalling the app removes all of it. There is no cloud copy and no copy held by the developer.
+In its own private storage on the phone: a copy of the word list, unpacked from the app on first use, and the last 30 words you looked up, so the search field can offer them again (the "Clear this list" line in the search screen removes them), and whether dark mode is on. Nothing else. The app is left out of Android's backups (`allowBackup="false"`), the word list sits in a folder Android does not back up, and uninstalling the app removes all of it. There is no cloud copy and no copy held by the developer.
 
 The word list is Open English WordNet 2025 (CC BY 4.0), bundled in the app. Looking a word up reads that file on the phone and talks to nothing.
 
@@ -44,11 +44,18 @@ Define appears in the menu over text selected in another app. When you choose it
 
 ## Permissions, and what each is for
 
-None. The manifest has no `uses-permission` line. It carries one `queries` entry (apps that offer a text action), so that the search field's selection menu can list them behind its ⋮; it grants no access to anything on the phone.
+None. The manifest has no `uses-permission` line. It carries four `queries` entries, which let the app see whether these are installed and grant no access to anything on the phone:
+
+- Home, whose dark mode switch the app follows when Home is on the phone. The app asks Home only whether dark mode is on.
+- A browser, so About can say when there is none to open its links.
+- Apps that offer a text action, so the search field's selection menu can list them behind its ⋮.
+- Translate, so a word not found can offer to open it in Translate.
 
 ## Who else receives anything
 
 No one. The app contacts no host.
+
+Text goes to another app on the phone only when you send it there: pressing Translate under a word not found opens that word in the Translate app, and choosing another app's action from the search field's selection menu hands it the selected text. That app then handles the text under its own policy. The email address in About opens your mail app, only when you press it.
 
 In About, "feed the llamas" opens a donation page (square.link) and wanderthe.dev opens the author's website, in your browser and only when you press them. The app does not fetch either page and learns nothing about whether you went.
 
