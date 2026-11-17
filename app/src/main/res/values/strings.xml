@@ -15,6 +15,7 @@
     <string name="search_hint">A word or phrase</string>
     <string name="search_recent">Looked up lately</string>
     <string name="unpacking">Unpacking the word list. This happens once.</string>
+    <string name="unpack_failed">The word list could not be unpacked. The phone may be short of space; free some and open the app again.</string>
     <!-- %1$s is the word that was asked for -->
     <string name="not_found">“%1$s” is not in this dictionary.</string>
     <string name="not_found_near">Words that begin the same way:</string>
@@ -91,7 +92,6 @@
     <string name="privacy_rights_title">Your rights</string>
     <string name="privacy_rights">Under the GDPR you can ask to see the data held about you, to have it corrected or deleted, to limit or object to its use, to take a copy with you, to withdraw consent, and to complain to a data protection authority. Since the app keeps what it stores only on your phone, you can do most of this yourself: remove the remembered words with Clear this list in the search screen, clear the app\'s data in Android\'s settings, or uninstall the app.</string>
     <!-- /shared-about -->
-    <string name="settings_dark">Dark mode</string>
     <string name="page_arrow_previous">Previous page</string>
     <string name="page_arrow_next">Next page</string>
     <string name="selection_more">More</string>

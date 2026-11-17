@@ -40,9 +40,15 @@ fun DictionaryApp(
     onExit: () -> Unit = {},
 ) {
     val context = LocalContext.current
-    val dictionary by produceState<Dictionary?>(null) {
-        value = withContext(Dispatchers.IO) { Dictionary.open(context) }
+    val loading by produceState<Loading>(Loading.Opening(unpacking = false)) {
+        // Asked off the main thread: it opens the file to read its edition.
+        if (withContext(Dispatchers.IO) { Dictionary.needsUnpacking(context) }) value = Loading.Opening(unpacking = true)
+        // A full disk or a damaged file is said on the screen, not a crash at every start.
+        value = withContext(Dispatchers.IO) {
+            runCatching { Loading.Ready(Dictionary.open(context)) }.getOrElse { Loading.Failed }
+        }
     }
+    val dictionary = (loading as? Loading.Ready)?.dictionary
     var about by rememberSaveable { mutableStateOf(false) }
     val stack = rememberSaveable(saver = listSaver()) { mutableStateListOf<String>().apply { start?.let(::add) } }
     var offered by remember { mutableStateOf<String?>(null) }
@@ -68,7 +74,11 @@ fun DictionaryApp(
     if (dict == null) {
         MessageScreen(
             title = stringResource(R.string.app_name),
-            message = if (Dictionary.needsUnpacking(context)) stringResource(R.string.unpacking) else "",
+            message = when (val l = loading) {
+                Loading.Failed -> stringResource(R.string.unpack_failed)
+                is Loading.Opening -> if (l.unpacking) stringResource(R.string.unpacking) else ""
+                is Loading.Ready -> ""
+            },
             onBack = start?.let { { onExit() } },
             onAbout = onAbout,
         )
@@ -77,7 +87,7 @@ fun DictionaryApp(
         // The list for the query it was asked about: it is kept on screen while the next one
         // is read, and "nothing matches" is only said once the answer for this query is in.
         val suggested by produceState(lastSuggested, query) {
-            value = Suggested(query, withContext(Dispatchers.IO) { dict.startingWith(query) })
+            value = Suggested(query, withContext(Dispatchers.IO) { runCatching { dict.startingWith(query) }.getOrDefault(emptyList()) })
             lastSuggested = value
         }
         var recent by remember { mutableStateOf(Recent.list(context)) }
@@ -100,8 +110,10 @@ fun DictionaryApp(
         } else {
             val page by produceState<Page?>(null, word) {
                 value = withContext(Dispatchers.IO) {
-                    val found = dict.lookUp(word)
-                    Page(found, if (found.isEmpty()) nearby(dict, word) else emptyList())
+                    runCatching {
+                        val found = dict.lookUp(word)
+                        Page(found, if (found.isEmpty()) nearby(dict, word) else emptyList())
+                    }.getOrDefault(Page(emptyList(), emptyList()))
                 }
             }
             LaunchedEffect(page) { page?.found?.firstOrNull()?.let { Recent.add(context, it.word) } }
@@ -146,6 +158,13 @@ private data class Suggested(val query: String, val words: List<String>)
 
 /** Which stored screen a word on the stack is: the same word can sit in it twice. */
 private fun pageKey(depth: Int, word: String) = "page:$depth:$word"
+
+/** The word list while it opens, once open, or when it could not be unpacked. */
+private sealed interface Loading {
+    data class Opening(val unpacking: Boolean) : Loading
+    data class Ready(val dictionary: Dictionary) : Loading
+    data object Failed : Loading
+}
 
 private data class Page(val found: List<Found>, val near: List<String>)
 

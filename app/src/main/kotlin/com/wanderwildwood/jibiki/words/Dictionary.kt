@@ -180,10 +180,19 @@ class Dictionary private constructor(private val db: SQLiteDatabase) {
          */
         private fun unpack(context: Context, file: File) {
             val partial = File(file.parentFile, "wordnet.db.partial")
-            context.assets.open(ASSET).use { input ->
-                partial.outputStream().use { input.copyTo(it, 1 shl 16) }
+            try {
+                context.assets.open(ASSET).use { input ->
+                    java.io.FileOutputStream(partial).use { out ->
+                        input.copyTo(out, 1 shl 16)
+                        // On the disk before the rename, or a power cut could leave a file
+                        // whose header passes the edition check with pages missing behind it.
+                        out.fd.sync()
+                    }
+                }
+                check(partial.renameTo(file)) { "could not put the word list in place" }
+            } finally {
+                partial.delete()
             }
-            check(partial.renameTo(file)) { "could not put the word list in place" }
         }
     }
 }
