@@ -163,7 +163,7 @@ fun DictionaryApp(
 private data class Suggested(val query: String, val words: List<String>)
 
 /** Which stored screen a word on the stack is: the same word can sit in it twice. */
-private fun pageKey(depth: Int, word: String) = "page:$depth:$word"
+private fun pageKey(depth: Int, word: String) = "page:$depth:${word.hashCode()}"
 
 /** The word list while it opens, once open, or when it could not be unpacked. */
 private sealed interface Loading {

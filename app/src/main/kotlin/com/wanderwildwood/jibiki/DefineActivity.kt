@@ -23,12 +23,17 @@ import com.wanderwildwood.jibiki.ui.ArmedScope
 class DefineActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val selection = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString()
-        if (selection.isNullOrBlank()) {
+        val whole = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString()
+        if (whole.isNullOrBlank()) {
             finish()
             return
         }
-        val writable = !intent.getBooleanExtra(Intent.EXTRA_PROCESS_TEXT_READONLY, false) && callingActivity != null
+        // Anything this long reads as too long to look up; only its start is kept, so a whole
+        // document selected is not tidied on the main thread or carried in saved state. A cut
+        // selection is never written back over the whole.
+        val selection = whole.take(MAX_SELECTION)
+        val writable = selection.length == whole.length &&
+            !intent.getBooleanExtra(Intent.EXTRA_PROCESS_TEXT_READONLY, false) && callingActivity != null
         setContent {
             // A steady cursor: a blinking one repaints the panel twice a second for as long
             // as the search field has focus.
@@ -45,6 +50,10 @@ class DefineActivity : ComponentActivity() {
                 } }
             }
         }
+    }
+
+    private companion object {
+        const val MAX_SELECTION = 1000
     }
 
     private fun replaceWith(selection: String, word: String) {
