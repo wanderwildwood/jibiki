@@ -116,7 +116,13 @@ fun DictionaryApp(
                     }.getOrDefault(Page(emptyList(), emptyList()))
                 }
             }
-            LaunchedEffect(page) { page?.found?.firstOrNull()?.let { Recent.add(context, it.word) } }
+            // Once per page put on the stack: coming Back to it does not move it to the top of
+            // the recent list again. Kept with the page's own saved state.
+            var recorded by rememberSaveable { mutableStateOf(false) }
+            LaunchedEffect(page) {
+                val headword = page?.found?.firstOrNull()?.word ?: return@LaunchedEffect
+                if (!recorded) { Recent.add(context, headword); recorded = true }
+            }
             val p = page
             if (p == null) {
                 // Not "not found" while it is still looking: an empty page would say that.
