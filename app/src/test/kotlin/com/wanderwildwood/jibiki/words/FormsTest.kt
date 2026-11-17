@@ -13,6 +13,10 @@ class FormsTest {
         assertEquals("don't", Forms.clean("Don’t"))
         assertEquals("well known.", Forms.clean("  well\n known. "))
         assertEquals("etc.", Forms.clean("etc."))
+        assertEquals("etc.", Forms.clean("etc.,"))
+        assertEquals("wait.", Forms.clean("wait..."))
+        assertEquals("word", Forms.clean("word,."))
+        assertEquals("word", Forms.clean("(word)."))
         assertEquals("", Forms.clean("("))
         assertEquals("", Forms.clean("—"))
     }
@@ -100,6 +104,7 @@ class FormsTest {
     fun `a possessive and a sentence's full stop are tried off`() {
         assertTrue("river" in Forms.spellings("river's"))
         assertTrue("end" in Forms.spellings("end."))
+        assertTrue("wait" in Forms.spellings("wait.."))
     }
 
     @Test

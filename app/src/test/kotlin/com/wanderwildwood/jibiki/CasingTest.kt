@@ -17,6 +17,13 @@ class CasingTest {
     }
 
     @Test
+    fun `punctuation the selection took with it stays in the text`() {
+        assertEquals("glad, ", Casing.match("happy, ", "glad"))
+        assertEquals("“Glad”", Casing.match("“Happy”", "glad"))
+        assertEquals("(glad).", Casing.match("(happy).", "glad"))
+    }
+
+    @Test
     fun `a one-letter capital is a capital, not shouting`() {
         assertEquals("One", Casing.match("A", "one"))
     }

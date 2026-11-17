@@ -58,7 +58,9 @@ object Forms {
         return java.text.Normalizer.normalize(out, java.text.Normalizer.Form.NFC)
     }
 
-    private val edges = Regex("""^[^\p{L}\p{N}]+|[^\p{L}\p{N}.]+$""")
+    private val lead = Regex("""^[^\p{L}\p{N}]+""")
+    /** What follows the last letter or digit; a full stop right after it is kept ("etc."). */
+    private val trail = Regex("""(?<=[\p{L}\p{N}])(\.?)[^\p{L}\p{N}]*$""")
     private val space = Regex("""\s+""")
 
     /**
@@ -82,7 +84,8 @@ object Forms {
             .replace('\u2018', '\'')
             .replace('\u00A0', ' ')
             .replace(space, " ")
-            .replace(edges, "")
+            .replace(lead, "")
+            .replace(trail) { it.groupValues[1] }
             .trim()
 
     /**
@@ -95,7 +98,7 @@ object Forms {
         val out = LinkedHashSet<String>()
         val bases = buildList {
             add(key)
-            if (key.endsWith('.')) add(key.dropLast(1))
+            if (key.endsWith('.')) add(key.trimEnd('.'))
             if (key.endsWith("'s")) add(key.dropLast(2))
             if (key.endsWith("s'")) add(key.dropLast(1))
         }
