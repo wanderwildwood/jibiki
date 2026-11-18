@@ -1,6 +1,6 @@
 # Dictionary — Privacy Policy
 
-Version 0.1.26. Last reviewed 17 November 2026.
+Last reviewed 17 November 2026.
 
 ## The short version
 
