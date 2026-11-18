@@ -15,7 +15,7 @@ ships with.
 | | |
 |---|---|
 | ![Looking a word up from the app itself](screenshots/1-search.png) | ![What the word means, and its other words](screenshots/2-word.png) |
-| ![About: Privacy, Terms and Licenses](screenshots/3-about.png) | ![Licenses: the source, the GPL and what it is built with](screenshots/4-licences.png) |
+| ![About: Privacy, Terms and Licenses](screenshots/3-about.png) | ![Licenses: the source, the GPL and what it is built with](screenshots/4-licenses.png) |
 
 ## What it does
 
@@ -47,10 +47,10 @@ Since Android 11, an app sees other apps' text actions only if it says in its ma
 wants to. Most apps built on Android's ordinary text views do; some do not, and there is
 nothing this app can do about that from its side.
 
-Among the apps made alongside it, Mailbox ([tayori](https://github.com/wanderwildwood/tayori))
-and Feeds ([kirinuki](https://github.com/wanderwildwood/kirinuki)) already offer it, and
-Typewriter ([dajiki](https://github.com/wanderwildwood/dajiki)) and Memo do from their next
-releases. Swapping
+Among the apps made alongside it, Mailbox ([tayori](https://github.com/wanderwildwood/tayori)),
+Feeds ([kirinuki](https://github.com/wanderwildwood/kirinuki)), Typewriter
+([dajiki](https://github.com/wanderwildwood/dajiki)) and Memo
+([oboegaki](https://github.com/wanderwildwood/oboegaki)) offer it. Swapping
 a word in works where the app asks for the answer back: Mailbox's compose screen and Typewriter
 both do. Memo, being Jetpack Compose, opens Define to read only, which is Compose's own
 default.
