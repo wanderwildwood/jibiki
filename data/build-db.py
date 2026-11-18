@@ -8,7 +8,6 @@ senses in their usual order, definitions, examples, and four relations
 (antonym between senses; broader, similar and see-also between synsets).
 """
 import gzip
-import re
 import sqlite3
 import sys
 import unicodedata
@@ -18,7 +17,6 @@ POS = {"n": "n", "v": "v", "a": "a", "s": "a", "r": "r"}
 SYNSET_RELS = {"hypernym": 1, "instance_hypernym": 1, "similar": 2, "also": 3}
 
 
-_MARKS = re.compile(r"[\u0300-\u036f]+")
 _SPECIAL = {"ß": "ss", "æ": "ae", "œ": "oe", "ø": "o", "đ": "d", "ł": "l", "ı": "i"}
 
 
@@ -27,7 +25,8 @@ def fold(text):
 
     Must stay the same as Forms.fold in the app: both sides of a lookup are folded alike.
     """
-    plain = _MARKS.sub("", unicodedata.normalize("NFD", text.lower()))
+    # Every nonspacing mark (Unicode category Mn), as \p{Mn} in the app, not only U+0300-036F.
+    plain = "".join(c for c in unicodedata.normalize("NFD", text.lower()) if unicodedata.category(c) != "Mn")
     return unicodedata.normalize("NFC", "".join(_SPECIAL.get(c, c) for c in plain))
 
 
