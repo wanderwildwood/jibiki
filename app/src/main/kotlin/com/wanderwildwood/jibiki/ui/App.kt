@@ -15,6 +15,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.wanderwildwood.jibiki.R
 import com.wanderwildwood.jibiki.words.Dictionary
 import com.wanderwildwood.jibiki.words.Forms
@@ -40,7 +42,11 @@ fun DictionaryApp(
     onExit: () -> Unit = {},
 ) {
     val context = LocalContext.current
-    val loading by produceState<Loading>(Loading.Opening(unpacking = false)) {
+    // Bumped to open the word list again after it failed: the launcher brings back this same
+    // activity (singleTask), so "open the app again" has to mean coming back to it.
+    var attempt by remember { mutableStateOf(0) }
+    val loading by produceState<Loading>(Loading.Opening(unpacking = false), attempt) {
+        value = Loading.Opening(unpacking = false)
         // Asked off the main thread: it opens the file to read its edition.
         if (withContext(Dispatchers.IO) { Dictionary.needsUnpacking(context) }) value = Loading.Opening(unpacking = true)
         // A full disk or a damaged file is said on the screen, not a crash at every start.
@@ -48,7 +54,15 @@ fun DictionaryApp(
             runCatching { Loading.Ready(Dictionary.open(context)) }.getOrElse { Loading.Failed }
         }
     }
-    val dictionary = (loading as? Loading.Ready)?.dictionary
+    // The open word list a read failed on, damaged or gone from under the app. It is not
+    // used again, so a failure is said as one and not as "not in this dictionary".
+    var broken by remember { mutableStateOf<Dictionary?>(null) }
+    val ready = (loading as? Loading.Ready)?.dictionary
+    val readFailed = ready != null && ready === broken
+    val dictionary = ready?.takeIf { it !== broken }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { if (readFailed || loading == Loading.Failed) attempt++ }
+    // Called on the IO thread; its file is put aside there so the next open unpacks afresh.
+    fun failedOn(dict: Dictionary) = Dictionary.discard(context, dict)
     var about by rememberSaveable { mutableStateOf(false) }
     val stack = rememberSaveable(saver = listSaver()) { mutableStateListOf<String>().apply { start?.let(::add) } }
     var offered by remember { mutableStateOf<String?>(null) }
@@ -74,7 +88,7 @@ fun DictionaryApp(
     if (dict == null) {
         MessageScreen(
             title = stringResource(R.string.app_name),
-            message = when (val l = loading) {
+            message = if (readFailed) stringResource(R.string.read_failed) else when (val l = loading) {
                 Loading.Failed -> stringResource(R.string.unpack_failed)
                 is Loading.Opening -> if (l.unpacking) stringResource(R.string.unpacking) else ""
                 is Loading.Ready -> ""
@@ -87,8 +101,13 @@ fun DictionaryApp(
         // The list for the query it was asked about: it is kept on screen while the next one
         // is read, and "nothing matches" is only said once the answer for this query is in.
         val suggested by produceState(lastSuggested, query) {
-            value = Suggested(query, withContext(Dispatchers.IO) { runCatching { dict.startingWith(query) }.getOrDefault(emptyList()) })
-            lastSuggested = value
+            val words = withContext(Dispatchers.IO) {
+                runCatching { dict.startingWith(query) }.onFailure { failedOn(dict) }.getOrNull()
+            }
+            if (words == null) broken = dict else {
+                value = Suggested(query, words)
+                lastSuggested = value
+            }
         }
         var recent by remember { mutableStateOf(Recent.list(context)) }
         SearchScreen(
@@ -109,12 +128,13 @@ fun DictionaryApp(
             MessageScreen(stringResource(R.string.app_name), stringResource(message), ::back, onAbout)
         } else {
             val page by produceState<Page?>(null, word) {
-                value = withContext(Dispatchers.IO) {
+                val read = withContext(Dispatchers.IO) {
                     runCatching {
                         val found = dict.lookUp(word)
                         Page(found, if (found.isEmpty()) nearby(dict, word) else emptyList())
-                    }.getOrDefault(Page(emptyList(), emptyList()))
+                    }.onFailure { failedOn(dict) }.getOrNull()
                 }
+                if (read == null) broken = dict else value = read
             }
             // Once per page put on the stack: coming Back to it does not move it to the top of
             // the recent list again. Kept with the page's own saved state.

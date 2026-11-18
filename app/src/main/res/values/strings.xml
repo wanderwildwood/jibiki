@@ -16,6 +16,7 @@
     <string name="search_recent">Looked up lately</string>
     <string name="unpacking">Unpacking the word list. This happens once.</string>
     <string name="unpack_failed">The word list could not be unpacked. The phone may be short of space; free some and open the app again.</string>
+    <string name="read_failed">The word list could not be read. Leave the app and open it again to unpack a fresh copy.</string>
     <!-- %1$s is the word that was asked for -->
     <string name="not_found">“%1$s” is not in this dictionary.</string>
     <string name="not_found_near">Words that begin the same way:</string>

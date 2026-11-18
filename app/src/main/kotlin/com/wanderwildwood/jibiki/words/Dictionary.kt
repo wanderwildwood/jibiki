@@ -163,6 +163,21 @@ class Dictionary private constructor(private val db: SQLiteDatabase) {
             }
         }
 
+        /**
+         * After a read from [broken] failed: it is closed and forgotten, and, if it was the
+         * word list in use, its file is removed, so the next [open] unpacks a fresh copy
+         * instead of handing back a damaged one. A page still holding an older handle only
+         * closes it: the file in place by then may be a new, whole one.
+         */
+        fun discard(context: Context, broken: Dictionary) {
+            synchronized(this) {
+                val current = opened === broken
+                if (current) opened = null
+                runCatching { broken.db.close() }
+                if (current) File(context.noBackupFilesDir, "wordnet.db").delete()
+            }
+        }
+
         /** Whether [open] will have to unpack first, so the screen can say why it is slow. */
         fun needsUnpacking(context: Context): Boolean =
             opened == null && edition(File(context.noBackupFilesDir, "wordnet.db")) != EDITION
