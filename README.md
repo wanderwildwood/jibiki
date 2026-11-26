@@ -14,8 +14,8 @@ ships with.
 
 | | |
 |---|---|
-| ![Looking a word up from the app itself](screenshots/1-search.png) | ![What the word means, and its other words](screenshots/2-word.png) |
-| ![About: Privacy, Terms and Licenses](screenshots/3-about.png) | ![Licenses: the source, the GPL and what it is built with](screenshots/4-licenses.png) |
+| ![Looking a word up, with the words looked up lately](screenshots/1-search.png) | ![What the word means, and its other words](screenshots/2-word.png) |
+| ![Define, from a word chosen in another app](screenshots/3-define.png) | ![A word with its other forms on the same page](screenshots/4-forms.png) |
 
 ## What it does
 
