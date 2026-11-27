@@ -38,7 +38,8 @@ ships with.
 ## What it does not do
 
 - **Nothing leaves the phone.** The whole word list is inside the app, about 136,000 words.
-  The app asks for no permissions at all, not even the internet.
+  The app asks for no permissions at all, not even the internet. A word goes to Translate only
+  when you press that row.
 - **English only.** One language, done properly, beats several done thinly.
 - **No word of the day, no history synced anywhere, no account.** The recent list is kept on
   the phone and goes when the app does.
