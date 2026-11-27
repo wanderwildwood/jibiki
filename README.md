@@ -32,6 +32,8 @@ ships with.
   between them.
 - **A search field of its own**, with the words that begin with what you have typed and the
   ones you looked up lately.
+- **Translate, for a word it does not have.** A word that is not in the dictionary gets one
+  row under the near words that hands it to Translate, when Translate is on the phone.
 
 ## What it does not do
 
